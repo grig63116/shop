@@ -58,5 +58,4 @@
 /public/build
 
 # Environment
-.end
-.end.test
+.env*
