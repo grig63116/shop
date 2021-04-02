@@ -1,0 +1,33 @@
+{% extends 'index/index.twig' %}
+
+{% block index_body_classes %}{{ parent() }} authentication-bg{% endblock %}
+
+{% block index_page %}
+    {% block authentication_page %}
+        <div class="account-pages mt-5 mb-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                        {% block authentication_page_card %}
+                            <div class="card">
+                                <div class="card-header pt-4 pb-4 text-center bg-primary">
+                                    <a href="{{ path('index_index') }}">
+                                        <span>
+                                            <img src="{{ asset('images/logo-light@4x.png') }}" alt="" height="33">
+                                        </span>
+                                    </a>
+                                </div>
+
+                                <div class="card-body p-4">
+                                    {% block authentication_page_card_body %}
+                                    {% endblock %}
+                                </div>
+                            </div>
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+{% endblock %}

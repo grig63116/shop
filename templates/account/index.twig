@@ -1,0 +1,17 @@
+{% extends 'index/index.twig' %}
+
+ {% block index_head %}
+     {% embed 'index/head.twig' %}
+         {% block index_head_stylesheets_encore %}
+             {{ parent() }}
+
+             {{ encore_entry_link_tags('account') }}
+         {% endblock %}
+     {% endembed %}
+ {% endblock %}
+
+{% block index_javascript_encore %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('account') }}
+{% endblock %}

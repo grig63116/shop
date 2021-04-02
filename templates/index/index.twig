@@ -1,0 +1,72 @@
+{% block index_start %}{% endblock %}
+
+{% block index_doctype %}
+<!DOCTYPE html>
+{% endblock %}
+
+{% block index_html %}
+<html lang="en" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+{% endblock %}
+
+{% block index_head %}
+    {% include 'index/head.twig' %}
+{% endblock %}
+
+<body class="{% block index_body_classes %}{% autoescape %}is--ctl-{{ Controller }} is--act-{{ Action }}{% endautoescape %}{% endblock %}" {% block index_body_attributes %}{% endblock %}>
+
+{% block index_before_body %}{% endblock %}
+
+{# Message if javascript is disabled #}
+{% block index_no_script_message %}
+    <noscript class="noscript-main">
+        {% include '_includes/messages.twig' with {'type':'warning','content':'Please activate the js.'} %}
+    </noscript>
+{% endblock %}
+
+{% block index_page %}
+    <div id="app" {% block index_page_attributes %}{% endblock %}></div>
+{% endblock %}
+
+{% block index_javascript %}
+    {% block index_javascript_inline %}
+        <script type="text/javascript" id="js--inline">
+            {% autoescape 'js' %}
+            function json_decode (json, defaultValue = {}) {
+                try {
+                    return JSON.parse(json);
+                } catch (e) {
+                    return defaultValue;
+                }
+            }
+
+            //<![CDATA[
+            {% block index_javascript_var %}
+            const $appConfig = {
+                timeNow: {{ date().timestamp }},
+                routes: {
+                    'home': '{{ path("home_index") }}',
+                    'login': '{{ path("authentication_login") }}',
+                    'register': '{{ path("authentication_register") }}',
+                    'account': '{{ path("account_index") }}',
+                    'cart': '{{ path("checkout_cart") }}',
+                },
+                flashes: json_decode(`{{ app.flashes|json_encode }}`, [])
+            };
+            {% endblock %}
+            //]]>
+            {% endautoescape %}
+        </script>
+    {% endblock %}
+
+    {% block index_javascript_main %}
+        {% block index_javascript_encore %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    {% endblock %}
+
+{% endblock %}
+
+{% block index_after_body %}{% endblock %}
+
+</body>
+</html>
