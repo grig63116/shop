@@ -7,6 +7,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Http\SecurityEvents;
 
 abstract class AbstractController extends SymfonyAbstractController implements ControllerInterface
 {
@@ -30,7 +34,6 @@ abstract class AbstractController extends SymfonyAbstractController implements C
         return array_merge(parent::getSubscribedServices(), [
             'request_stack' => '?' . RequestStack::class,
             'security.csrf.token_manager' => '?' . CsrfTokenManagerInterface::class,
-//            'swiftmailer.mailer' => '?' . \Swift_Mailer::class,
         ]);
     }
 
@@ -115,5 +118,17 @@ abstract class AbstractController extends SymfonyAbstractController implements C
         }
 
         return $this->variables;
+    }
+
+    /**
+     * @param UserInterface $user
+     */
+    protected function loginUser(UserInterface $user)
+    {
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->container->get('security.token_storage')->setToken($token);
+
+        $event = new InteractiveLoginEvent($this->request, $token);
+        $this->container->get('event_dispatcher')->dispatch(SecurityEvents::INTERACTIVE_LOGIN, $event);
     }
 }

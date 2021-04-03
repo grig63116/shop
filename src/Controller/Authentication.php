@@ -28,22 +28,15 @@ class Authentication extends AbstractController
     protected $session;
 
     /**
-     * @var MailService
-     */
-    private $mailService;
-
-    /**
      * Authentication constructor.
      * @param ContainerInterface $container
      * @param EntityManagerInterface $em
      * @param SessionInterface $session
-     * @param MailService $mailService
      */
     public function __construct(
         ContainerInterface $container,
         EntityManagerInterface $em,
         SessionInterface $session
-//        MailService $mailService
     )
     {
         if (class_exists(get_parent_class($this)) && method_exists(get_parent_class($this), __FUNCTION__)) {
@@ -51,7 +44,6 @@ class Authentication extends AbstractController
         }
         $this->em = $em;
         $this->session = $session;
-//        $this->mailService = $mailService;
     }
 
     /**
@@ -147,43 +139,11 @@ class Authentication extends AbstractController
         $password = $this->get('security.password_encoder')->encodePassword($user, $user->getPlainPassword());
         $user->setPassword($password);
 
-//        $user->setActive(false);
-
         $this->em->persist($user);
         $this->em->flush();
 
-//        $this->mailService->sendMail([
-//            'recipientEmail' => $user->getEmail(),
-//            'recipientName' => $user->getName(),
-//            'subject' => 'Thanks for registering',
-//            'template' => 'frontend/email/registration.twig',
-//            'params' => [
-//                'name' => $user->getName(),
-//                'email' => $user->getEmail(),
-//                'confirmationToken' => $user->getConfirmationToken()
-//            ]
-//        ]);
+        $this->loginUser($user);
 
-        $this->session->set('lastRegisteredEmail', $user->getEmail());
-
-        return $this->redirectToRoute('authentication_register_success');
-    }
-
-    /**
-     * @return Response
-     */
-    #[Route("/register/success", name: "register_success")]
-    public function registerSuccessAction()
-    {
-        $email = $this->session->get('lastRegisteredEmail');
-        if (!$email) {
-            return $this->redirectToRoute('authentication_register');
-        }
-        $this->session->remove('lastRegisteredEmail');
-        $this->assign([
-            'email' => $email
-        ]);
-
-        return $this->render();
+        return $this->redirectToRoute('account_index');
     }
 }

@@ -1,5 +1,5 @@
 <template>
-  <header>
+  <header class="bg-light">
     <b-container class="d-flex justify-content-between align-items-center py-3">
       <Logo></Logo>
       <ShopNav></ShopNav>
