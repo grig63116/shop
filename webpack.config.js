@@ -39,6 +39,8 @@ Encore
     .addEntry('app', '@/app.js')
     .addEntry('home', '@/pages/home/app.js')
     .addEntry('account', '@/pages/account/app.js')
+    .addEntry('login', '@/pages/login/app.js')
+    .addEntry('register', '@/pages/register/app.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

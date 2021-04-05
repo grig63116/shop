@@ -11,6 +11,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 abstract class AbstractController extends SymfonyAbstractController implements ControllerInterface
 {
@@ -34,6 +36,7 @@ abstract class AbstractController extends SymfonyAbstractController implements C
         return array_merge(parent::getSubscribedServices(), [
             'request_stack' => '?' . RequestStack::class,
             'security.csrf.token_manager' => '?' . CsrfTokenManagerInterface::class,
+            'symfony.component.serializer.serializer' => '?' . SerializerInterface::class,
         ]);
     }
 
@@ -44,10 +47,6 @@ abstract class AbstractController extends SymfonyAbstractController implements C
     public function preDispatch()
     {
         $this->request = $this->get('request_stack')->getCurrentRequest();
-
-        $this->assign([
-            'user' => $this->getUser()
-        ]);
     }
 
     /**
@@ -130,5 +129,19 @@ abstract class AbstractController extends SymfonyAbstractController implements C
 
         $event = new InteractiveLoginEvent($this->request, $token);
         $this->container->get('event_dispatcher')->dispatch(SecurityEvents::INTERACTIVE_LOGIN, $event);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getUserData()
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return [];
+        }
+        /** @var SerializerInterface $serializer */
+        $serializer = $this->container->get('symfony.component.serializer.serializer');
+        return $serializer->normalize($user, null, [AbstractNormalizer::IGNORED_ATTRIBUTES => ['password', 'plainPassword', 'salt']]);
     }
 }

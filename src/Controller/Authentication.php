@@ -4,16 +4,18 @@ namespace App\Controller;
 
 use App\Component\Controller\AbstractController;
 use App\Form\Type\RegistrationFormType;
-use App\Service\Core\MailService;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * Class Authentication
+ * @package App\Controller
+ */
 #[Route("/", name: "authentication_")]
 class Authentication extends AbstractController
 {
@@ -29,19 +31,14 @@ class Authentication extends AbstractController
 
     /**
      * Authentication constructor.
-     * @param ContainerInterface $container
      * @param EntityManagerInterface $em
      * @param SessionInterface $session
      */
     public function __construct(
-        ContainerInterface $container,
         EntityManagerInterface $em,
         SessionInterface $session
     )
     {
-        if (class_exists(get_parent_class($this)) && method_exists(get_parent_class($this), __FUNCTION__)) {
-            call_user_func_array([get_parent_class($this), __FUNCTION__], func_get_args());
-        }
         $this->em = $em;
         $this->session = $session;
     }
@@ -56,32 +53,31 @@ class Authentication extends AbstractController
         ]);
     }
 
+    /**
+     * @return Response
+     */
     #[Route("/login", name: "login", methods: ["GET"])]
-    public function loginAction(AuthenticationUtils $authenticationUtils): Response
+    public function loginAction(): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('account_index');
         }
 
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
-
-        $this->assign([
-            'last_username' => $lastUsername,
-            'error' => $error
-        ]);
-
         return $this->render();
     }
 
-    #[Route("/login/handler", name: "login_handler", methods: ["POST"])]
-    public function loginCheckAction()
+    /**
+     * @return Response
+     */
+    #[Route("/login", name: "login_handler", methods: ["POST"])]
+    public function loginHandlerAction(): Response
     {
-        throw new \RuntimeException('This should never be called directly.');
+        return $this->json([]);
     }
 
+    /**
+     * @throw new \RuntimeException
+     */
     #[Route("/logout", name: "logout")]
     public function logoutAction()
     {
@@ -90,7 +86,6 @@ class Authentication extends AbstractController
 
     /**
      * @return Response
-     * @throws \LogicException
      */
     #[Route("/register", name: "register", methods: ["GET"])]
     public function registerAction()
@@ -107,17 +102,14 @@ class Authentication extends AbstractController
         $this->assign([
             'form' => $form->createView()
         ]);
-
+dump($form);exit;
         return $this->render();
     }
 
     /**
      * @return RedirectResponse|Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
      */
-    #[Route("/register/handler", name: "register_handler", methods: ["POST"])]
+    #[Route("/register", name: "register_handler", methods: ["POST"])]
     public function registerHandlerAction()
     {
         if ($this->getUser()) {

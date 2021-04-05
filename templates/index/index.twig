@@ -42,15 +42,19 @@
             //<![CDATA[
             {% block index_javascript_var %}
             const $appConfig = {
-                timeNow: {{ date().timestamp }},
                 routes: {
                     'home': '{{ path("home_index") }}',
                     'login': '{{ path("authentication_login") }}',
+                    'login_handler': '{{ path("authentication_login_handler") }}',
+                    'logout': '{{ path("authentication_logout") }}',
                     'register': '{{ path("authentication_register") }}',
+                    'register_handler': '{{ path("authentication_register_handler") }}',
                     'account': '{{ path("account_index") }}',
+                    'user': '{{ path("account_user") }}',
                     'cart': '{{ path("checkout_cart") }}',
                 },
-                flashes: json_decode(`{{ app.flashes|json_encode }}`, [])
+                flashes: json_decode(`{{ app.flashes|json_encode }}`, []),
+                csrf_token: `{{ csrf_token('authenticate') }}`
             };
             {% endblock %}
             //]]>
