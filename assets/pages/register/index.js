@@ -1,38 +1,43 @@
 export default {
     data () {
         return {
+            form: null,
             error: '',
             validation: null,
         }
     },
+    created () {
+        this.asyncData();
+    },
     methods: {
-        async submit (event) {
-            event.preventDefault();
+        async asyncData () {
+            let loader = this.$loading.show();
 
-            let loader = this.$loading.show(),
-                data = this.getFormData();
+            return await this.$axios.get(this.$appConfig.routes.register_form)
+                .then(({ data }) => {
+                    console.log(data);
+                    this.form = data;
+                    loader.hide();
+                })
+                .catch(error => {
+                    loader.hide();
+                });
+        },
+        async register () {
+            let loader = this.$loading.show();
 
-            await this.$axios.post(this.$refs.form.action, data)
+            await this.$axios.post(this.$refs.form.action, this.getFormData())
                 .then(response => {
-                    this.error = '';
-                    this.validation = true;
                     window.location.href = this.$appConfig.routes.account;
                 })
                 .catch(({ response }) => {
-                    this.error = response.data.error;
-                    this.validation = false;
+                    console.log(response.data);
+                    this.form = response.data;
                     loader.hide();
                 });
         },
         getFormData () {
-            let data = {},
-                formData = new FormData(this.$refs.form);
-
-            formData.forEach(function (value, key) {
-                data[key] = value;
-            });
-
-            return data;
+            return new URLSearchParams(new FormData(this.$refs.form)).toString();
         }
     }
 }

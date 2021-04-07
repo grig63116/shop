@@ -8,7 +8,7 @@
 
       <b-alert v-if="error" show variant="danger">{{ error }}</b-alert>
 
-      <b-form method="post" :action="$appConfig.routes.login_handler" @submit="submit" ref="form">
+      <b-form method="post" :action="$appConfig.routes.login_handler" @submit.stop.prevent="login" ref="form">
 
         <b-input-group class="mb-2">
           <b-input-group-prepend is-text>

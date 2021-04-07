@@ -49,9 +49,10 @@
                     'logout': '{{ path("authentication_logout") }}',
                     'register': '{{ path("authentication_register") }}',
                     'register_handler': '{{ path("authentication_register_handler") }}',
+                    'register_form': '{{ path("authentication_register_form") }}',
                     'account': '{{ path("account_index") }}',
-                    'user': '{{ path("account_user") }}',
-                    'cart': '{{ path("checkout_cart") }}',
+                    'account_user': '{{ path("account_user") }}',
+                    'checkout_cart': '{{ path("checkout_cart") }}',
                 },
                 flashes: json_decode(`{{ app.flashes|json_encode }}`, []),
                 csrf_token: `{{ csrf_token('authenticate') }}`

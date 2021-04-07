@@ -13,6 +13,7 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 abstract class AbstractController extends SymfonyAbstractController implements ControllerInterface
 {
@@ -34,6 +35,7 @@ abstract class AbstractController extends SymfonyAbstractController implements C
     public static function getSubscribedServices()
     {
         return array_merge(parent::getSubscribedServices(), [
+            'event_dispatcher' => '?' . EventDispatcherInterface::class,
             'request_stack' => '?' . RequestStack::class,
             'security.csrf.token_manager' => '?' . CsrfTokenManagerInterface::class,
             'symfony.component.serializer.serializer' => '?' . SerializerInterface::class,
@@ -128,7 +130,7 @@ abstract class AbstractController extends SymfonyAbstractController implements C
         $this->container->get('security.token_storage')->setToken($token);
 
         $event = new InteractiveLoginEvent($this->request, $token);
-        $this->container->get('event_dispatcher')->dispatch(SecurityEvents::INTERACTIVE_LOGIN, $event);
+        $this->container->get('event_dispatcher')->dispatch($event, SecurityEvents::INTERACTIVE_LOGIN);
     }
 
     /**

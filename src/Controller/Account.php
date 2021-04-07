@@ -5,7 +5,7 @@ namespace App\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Component\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 
 /**
  * Class Account
@@ -31,9 +31,9 @@ class Account extends AbstractController
      * @return Response
      */
     #[Route("/user", name: "user", methods: ['GET'], condition: "request.isXmlHttpRequest()")]
-    public function userAction(Request $request)
+    public function userAction()
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted(AuthenticatedVoter::IS_AUTHENTICATED_FULLY);
         return $this->json($this->getUserData());
     }
 }

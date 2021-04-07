@@ -1,7 +1,7 @@
 export default {
     data () {
         return {
-            user: {}
+            user: null
         }
     },
     created () {
@@ -11,7 +11,7 @@ export default {
         async asyncData () {
             let loader = this.$loading.show();
 
-            return await this.$axios.get(this.$appConfig.routes.user)
+            return await this.$axios.get(this.$appConfig.routes.account_user)
                 .then(({ data }) => {
                     this.user = data;
                     loader.hide();

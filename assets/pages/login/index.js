@@ -6,13 +6,10 @@ export default {
         }
     },
     methods: {
-        async submit (event) {
-            event.preventDefault();
+        async login () {
+            let loader = this.$loading.show();
 
-            let loader = this.$loading.show(),
-                data = this.getFormData();
-
-            await this.$axios.post(this.$refs.form.action, data)
+            await this.$axios.post(this.$refs.form.action, this.getFormData())
                 .then(response => {
                     this.error = '';
                     this.validation = true;
@@ -25,14 +22,7 @@ export default {
                 });
         },
         getFormData () {
-            let data = {},
-                formData = new FormData(this.$refs.form);
-
-            formData.forEach(function (value, key) {
-                data[key] = value;
-            });
-
-            return data;
+            return Object.fromEntries(new FormData(this.$refs.form));
         }
     }
 }
