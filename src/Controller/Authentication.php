@@ -74,7 +74,6 @@ class Authentication extends AbstractController
     #[Route("/login", name: "login_handler", methods: ["POST"], condition: "request.isXmlHttpRequest()")]
     public function loginHandlerAction(): Response
     {
-        $this->denyAccessUnlessGranted(AuthenticatedVoter::IS_ANONYMOUS);
         return $this->json([]);
     }
 
