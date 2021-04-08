@@ -42,6 +42,9 @@
 # Build data
 /build/
 
+# Migrations
+/migrations
+
 # Composer PHAR
 /composer.phar
 
