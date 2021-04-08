@@ -1,5 +1,5 @@
 <template>
-  <b-row>
+  <b-row align-content="between" align-v="center" :no-gutters="true">
     <b-col>
       <paginate
           v-model="page"
@@ -12,17 +12,27 @@
           page-link-class="btn btn-outline-primary btn-sm mx-1"
           prev-link-class="btn btn-outline-primary btn-sm mx-auto"
           next-link-class="btn btn-outline-primary btn-sm mx-auto"
+          break-view-link-class="border-0"
       >
       </paginate>
     </b-col>
     <b-col>
-      <label :for="`per-page-${this._uid}`">Products per page</label>
-      <b-form-select
-          :id="`per-page-${this._uid}`"
-          :options="perPageOptions"
-          v-model="perPage"
-          size="sm"
-      ></b-form-select>
+      <b-form-group
+          class="justify-content-end align-items-center mb-0"
+          label="Products per page"
+          content-cols="auto"
+          label-cols="auto"
+          label-align="right"
+          label-size="sm"
+          :label-for="`per-page-${this._uid}`"
+      >
+        <b-form-select
+            :id="`per-page-${this._uid}`"
+            :options="perPageOptions"
+            v-model="perPage"
+            size="sm"
+        ></b-form-select>
+      </b-form-group>
     </b-col>
   </b-row>
 </template>
@@ -48,11 +58,9 @@ export default {
       this.page = page;
     },
     perPageCount (perPage) {
-      console.log('perPageCount',perPage);
       this.perPage = perPage;
     },
     perPage (perPage) {
-      console.log('perPage',perPage);
       this.$emit('changePerPage', perPage);
     }
   },

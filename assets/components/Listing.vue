@@ -1,14 +1,22 @@
 <template>
   <div class="listing">
-    <ListingActions :currentPage="page" :pagesCount="pages" :perPageCount="perPage" @changePage="changePage"
-                    @changePerPage="changePerPage"></ListingActions>
-    <b-row v-if="products">
+    <ListingActions
+        :currentPage="page"
+        :pagesCount="pages"
+        :perPageCount="perPage"
+        @changePage="changePage"
+        @changePerPage="changePerPage"></ListingActions>
+    <b-row v-if="products" class="my-3">
       <b-col v-for="(product,number) in products" :key="number">
         <Product :product="product"></Product>
       </b-col>
     </b-row>
-    <ListingActions :currentPage="page" :pagesCount="pages" :perPageCount="perPage" @changePage="changePage"
-                    @changePerPage="changePerPage"></ListingActions>
+    <ListingActions
+        :currentPage="page"
+        :pagesCount="pages"
+        :perPageCount="perPage"
+        @changePage="changePage"
+        @changePerPage="changePerPage"></ListingActions>
   </div>
 </template>
 
@@ -17,7 +25,7 @@ export default {
   data () {
     return {
       products: null,
-      page: 1,
+      page: 3,
       perPage: 9,
       total: 0
     }
@@ -25,14 +33,6 @@ export default {
   computed: {
     pages () {
       return Math.ceil(this.total / this.perPage);
-    }
-  },
-  watch: {
-    page () {
-      this.asyncData();
-    },
-    perPage () {
-      this.asyncData();
     }
   },
   created () {
@@ -61,9 +61,11 @@ export default {
     },
     changePage (page) {
       this.page = page;
+      this.asyncData();
     },
     changePerPage (perPage) {
       this.perPage = perPage;
+      this.asyncData();
     }
   },
 }
