@@ -53,6 +53,7 @@
                     'account': '{{ path("account_index") }}',
                     'account_user': '{{ path("account_user") }}',
                     'checkout_cart': '{{ path("checkout_cart") }}',
+                    'product_list': '{{ path("product_list") }}',
                 },
                 flashes: json_decode(`{{ app.flashes|json_encode }}`, []),
                 csrf_token: `{{ csrf_token('authenticate') }}`

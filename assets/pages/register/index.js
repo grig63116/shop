@@ -17,10 +17,10 @@ export default {
                 .then(({ data }) => {
                     console.log(data);
                     this.form = data;
-                    loader.hide();
+                    this.$nextTick(loader.hide());
                 })
                 .catch(error => {
-                    loader.hide();
+                    this.$nextTick(loader.hide());
                 });
         },
         async register () {
@@ -33,7 +33,7 @@ export default {
                 .catch(({ response }) => {
                     console.log(response.data);
                     this.form = response.data;
-                    loader.hide();
+                    this.$nextTick(loader.hide());
                 });
         },
         getFormData () {

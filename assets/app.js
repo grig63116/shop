@@ -7,4 +7,5 @@ import '@/plugins/bootstrap';
 import '@/plugins/axios';
 import '@/plugins/loading';
 import '@/plugins/components';
+import '@/plugins/pagination';
 import '@/styles/app.scss';

@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -27,22 +26,14 @@ class Authentication extends AbstractController
     private $em;
 
     /**
-     * @var SessionInterface
-     */
-    protected $session;
-
-    /**
      * Authentication constructor.
      * @param EntityManagerInterface $em
-     * @param SessionInterface $session
      */
     public function __construct(
-        EntityManagerInterface $em,
-        SessionInterface $session
+        EntityManagerInterface $em
     )
     {
         $this->em = $em;
-        $this->session = $session;
     }
 
     /**

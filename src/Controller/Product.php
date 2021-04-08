@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Component\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use App\Service\ProductServiceInterface;
 
 /**
  * Class Product
@@ -14,11 +15,25 @@ use Symfony\Component\HttpFoundation\Response;
 class Product extends AbstractController
 {
     /**
+     * @var ProductServiceInterface
+     */
+    protected $productService;
+
+    public function __construct(
+        ProductServiceInterface $productService
+    )
+    {
+        $this->productService = $productService;
+    }
+
+    /**
      * @return Response
      */
-    #[Route("/{id}", name: "index")]
-    public function indexAction()
+    #[Route("/list", name: "list")]
+    public function listAction()
     {
-        return $this->render();
+        $page = $this->request->get('page');
+        $perPage = $this->request->get('perPage');
+        return $this->json($this->productService->getList(page: $page, perPage: $perPage));
     }
 }

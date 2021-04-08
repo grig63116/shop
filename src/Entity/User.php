@@ -3,8 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -28,10 +29,6 @@ class User implements UserInterface, \Serializable
      */
     private $email;
 
-    /**
-     * @Assert\Regex(pattern="/^((?!\s).)*$/", message="Password should not contain any whitespace characters.")
-     * @Assert\Length(max=4096)
-     */
     private $plainPassword;
 
     /**
@@ -81,7 +78,7 @@ class User implements UserInterface, \Serializable
     private $roles = [];
 
     /**
-     * @ORM\Column(type="datetime", nullable = true)
+     * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
     private $createdAt;

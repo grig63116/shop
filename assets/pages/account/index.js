@@ -14,10 +14,10 @@ export default {
             return await this.$axios.get(this.$appConfig.routes.account_user)
                 .then(({ data }) => {
                     this.user = data;
-                    loader.hide();
+                    this.$nextTick(loader.hide());
                 })
                 .catch(error => {
-                    loader.hide();
+                    this.$nextTick(loader.hide());
                 });
         }
     }

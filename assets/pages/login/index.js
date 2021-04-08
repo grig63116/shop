@@ -18,7 +18,7 @@ export default {
                 .catch(({ response }) => {
                     this.error = response.data.error;
                     this.validation = false;
-                    loader.hide();
+                    this.$nextTick(loader.hide());
                 });
         },
         getFormData () {
