@@ -6,9 +6,9 @@
         :perPageCount="perPage"
         @changePage="changePage"
         @changePerPage="changePerPage"></ListingActions>
-    <b-row v-if="products" class="my-3">
-      <b-col v-for="(product,number) in products" :key="number">
-        <Product :product="product"></Product>
+    <b-row v-if="products" class="my-3" alignh="between" align-v="stretch">
+      <b-col class="my-3" v-for="(product,number) in products" :key="number" cols="4">
+        <Product class="h-100" :product="product"></Product>
       </b-col>
     </b-row>
     <ListingActions

@@ -59,6 +59,7 @@
 
 # whatever path you're passing to Encore.setOutputPath()
 /public/build
+/public/media
 
 # Environment
 .env*

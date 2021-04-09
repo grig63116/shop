@@ -8,4 +8,6 @@ import '@/plugins/axios';
 import '@/plugins/loading';
 import '@/plugins/components';
 import '@/plugins/pagination';
+import '@/filters/currency';
+import '@/filters/truncate';
 import '@/styles/app.scss';
