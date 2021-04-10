@@ -9,6 +9,5 @@
 <style lang="scss" scoped>
 footer {
   border-top: 2px solid $primary;
-  color: $primary;
 }
 </style>

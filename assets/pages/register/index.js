@@ -2,8 +2,6 @@ export default {
     data () {
         return {
             form: null,
-            error: '',
-            validation: null,
         }
     },
     created () {
@@ -15,11 +13,11 @@ export default {
 
             return await this.$axios.get(this.$appConfig.routes.register_form)
                 .then(({ data }) => {
-                    console.log(data);
                     this.form = data;
                     this.$nextTick(loader.hide());
                 })
                 .catch(error => {
+                    this.$toast.error('An error has occurred.');
                     this.$nextTick(loader.hide());
                 });
         },
@@ -31,7 +29,7 @@ export default {
                     window.location.href = this.$appConfig.routes.account;
                 })
                 .catch(({ response }) => {
-                    console.log(response.data);
+                    this.$toast.error('An error has occurred.');
                     this.form = response.data;
                     this.$nextTick(loader.hide());
                 });

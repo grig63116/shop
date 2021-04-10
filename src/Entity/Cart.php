@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CartRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=CartRepository::class)
@@ -20,7 +21,7 @@ class Cart
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $token;
+    private $sessionId;
 
     /**
      * @ORM\Column(type="integer")
@@ -49,31 +50,49 @@ class Cart
 
     /**
      * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="create")
      */
     private $createdAt;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getToken(): ?string
+    /**
+     * @return string|null
+     */
+    public function getSessionId(): ?string
     {
-        return $this->token;
+        return $this->sessionId;
     }
 
-    public function setToken(string $token): self
+    /**
+     * @param string $sessionId
+     * @return $this
+     */
+    public function setSessionId(string $sessionId): self
     {
-        $this->token = $token;
+        $this->sessionId = $sessionId;
 
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
     public function getUserId(): ?int
     {
         return $this->userId;
     }
 
+    /**
+     * @param int|null $userId
+     * @return $this
+     */
     public function setUserId(?int $userId): self
     {
         $this->userId = $userId;
@@ -81,11 +100,18 @@ class Cart
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getProductNumber(): ?string
     {
         return $this->productNumber;
     }
 
+    /**
+     * @param string $productNumber
+     * @return $this
+     */
     public function setProductNumber(string $productNumber): self
     {
         $this->productNumber = $productNumber;
@@ -93,11 +119,18 @@ class Cart
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getProductName(): ?string
     {
         return $this->productName;
     }
 
+    /**
+     * @param string $productName
+     * @return $this
+     */
     public function setProductName(string $productName): self
     {
         $this->productName = $productName;
@@ -105,11 +138,18 @@ class Cart
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
     public function getQuantity(): ?int
     {
         return $this->quantity;
     }
 
+    /**
+     * @param int $quantity
+     * @return $this
+     */
     public function setQuantity(int $quantity): self
     {
         $this->quantity = $quantity;
@@ -117,11 +157,18 @@ class Cart
         return $this;
     }
 
+    /**
+     * @return float|null
+     */
     public function getPrice(): ?float
     {
         return $this->price;
     }
 
+    /**
+     * @param float $price
+     * @return $this
+     */
     public function setPrice(float $price): self
     {
         $this->price = $price;
@@ -129,11 +176,18 @@ class Cart
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
 
+    /**
+     * @param \DateTimeInterface $createdAt
+     * @return $this
+     */
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;

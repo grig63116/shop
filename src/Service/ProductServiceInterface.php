@@ -13,6 +13,12 @@ use Knp\Component\Pager\Pagination\PaginationInterface;
 interface ProductServiceInterface
 {
     /**
+     * @param string $number
+     * @return array
+     */
+    public function getByNumber(string $number): array;
+
+    /**
      * @param int $page
      * @param int $perPage
      * @param array $options

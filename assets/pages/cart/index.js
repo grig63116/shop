@@ -1,7 +1,8 @@
 export default {
     data () {
         return {
-            user: null
+            loader: null,
+            cart: null
         }
     },
     created () {
@@ -9,16 +10,16 @@ export default {
     },
     methods: {
         async asyncData () {
-            let loader = this.$loading.show();
+            this.loader = this.$loading.show();
 
-            return await this.$axios.get(this.$appConfig.routes.account_user)
+            return await this.$axios.get(this.$appConfig.routes.cart_content)
                 .then(({ data }) => {
-                    this.user = data;
-                    this.$nextTick(loader.hide());
+                    this.cart = data;
+                    this.$nextTick(this.loader.hide());
                 })
                 .catch(error => {
                     this.$toast.error('An error has occurred.');
-                    this.$nextTick(loader.hide());
+                    this.$nextTick(this.loader.hide());
                 });
         }
     }

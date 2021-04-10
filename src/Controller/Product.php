@@ -29,7 +29,7 @@ class Product extends AbstractController
     /**
      * @return Response
      */
-    #[Route("/list", name: "list")]
+    #[Route("/list", name: "list", methods: ['GET'], condition: "request.isXmlHttpRequest()")]
     public function listAction()
     {
         $page = $this->request->get('page');

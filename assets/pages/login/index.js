@@ -18,6 +18,7 @@ export default {
                 .catch(({ response }) => {
                     this.error = response.data.error;
                     this.validation = false;
+                    this.$toast.error('An error has occurred.');
                     this.$nextTick(loader.hide());
                 });
         },

@@ -7,7 +7,6 @@ use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -34,11 +33,6 @@ class ProductService implements ProductServiceInterface
     private $paginator;
 
     /**
-     * @var SessionInterface
-     */
-    protected $session;
-
-    /**
      * @var SerializerInterface
      */
     private $serializer;
@@ -47,21 +41,34 @@ class ProductService implements ProductServiceInterface
      * ProductService constructor.
      * @param EntityManagerInterface $em
      * @param PaginatorInterface $paginator
-     * @param SessionInterface $session
      * @param SerializerInterface $serializer
      */
     public function __construct(
         EntityManagerInterface $em,
         PaginatorInterface $paginator,
-        SessionInterface $session,
         SerializerInterface $serializer
     )
     {
         $this->em = $em;
         $this->repository = $this->em->getRepository(Product::class);
         $this->paginator = $paginator;
-        $this->session = $session;
         $this->serializer = $serializer;
+    }
+
+    /**
+     * @param string $number
+     * @return array
+     */
+    public function getByNumber(string $number): array
+    {
+        $product = $this->repository->findOneBy([
+            'number' => $number
+        ]);
+        if (!($product instanceof Product)) {
+            return [];
+        }
+
+        return $this->convertProducts($product)->get($product->getNumber());
     }
 
     /**
