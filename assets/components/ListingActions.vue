@@ -9,9 +9,9 @@
           :click-handler="clickCallback"
           :no-li-surround="true"
           :first-last-button="true"
-          page-link-class="btn btn-outline-primary btn-sm mx-1"
-          prev-link-class="btn btn-outline-primary btn-sm mx-auto"
-          next-link-class="btn btn-outline-primary btn-sm mx-auto"
+          page-link-class="btn btn-outline-secondary btn-sm mx-1"
+          prev-link-class="btn btn-outline-secondary btn-sm mx-auto"
+          next-link-class="btn btn-outline-secondary btn-sm mx-auto"
           break-view-link-class="border-0"
       >
       </paginate>

@@ -59,16 +59,20 @@ class ProductService implements ProductServiceInterface
      * @param string $number
      * @return array
      */
-    public function getByNumber(string $number): array
+    public function get(string $number, int $id = null): array
     {
-        $product = $this->repository->findOneBy([
+        $params = [
             'number' => $number
-        ]);
+        ];
+        if (!empty($id)) {
+            $params['id'] = $id;
+        }
+        $product = $this->repository->findOneBy($params);
         if (!($product instanceof Product)) {
             return [];
         }
 
-        return $this->convertProducts($product)->get($product->getNumber());
+        return $this->convertList([$product])->get($product->getNumber());
     }
 
     /**
@@ -90,19 +94,19 @@ class ProductService implements ProductServiceInterface
             'page' => $pagination->getCurrentPageNumber(),
             'perPage' => $pagination->getItemNumberPerPage(),
             'total' => $pagination->getTotalItemCount(),
-            'products' => $this->convertProducts(...$pagination->getItems())
+            'products' => $this->convertList($pagination->getItems())
         ];
     }
 
     /**
-     * @param Product ...$products
+     * @param iterable|array $products
      * @return ArrayCollection
      */
-    public function convertProducts(Product ...$products): ArrayCollection
+    public function convertList(iterable $products = []): ArrayCollection
     {
         $data = [];
         foreach ($products as $product) {
-            $product = $this->serializer->normalize($product, null, [AbstractNormalizer::IGNORED_ATTRIBUTES => ['password']]);
+            $product = $this->serializer->normalize($product);
             $data[$product['number']] = $product;
         }
         return new ArrayCollection($data);

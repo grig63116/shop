@@ -33,5 +33,7 @@
         "watch": "encore dev --watch",
         "build": "encore production --progress"
     },
-    "dependencies": {}
+    "dependencies": {
+        "vuex": "^3.6.2"
+    }
 }

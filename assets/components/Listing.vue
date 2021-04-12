@@ -19,7 +19,7 @@
           @changePage="changePage"
           @changePerPage="changePerPage"></ListingActions>
     </template>
-    <b-alert variant="warning" :show="!this.loader || (!this.loader.isActive && !this.productsCount)">
+    <b-alert variant="warning" :show="!loader || (!loader.isActive && !productsCount)">
       There is no any product to show!
     </b-alert>
   </div>

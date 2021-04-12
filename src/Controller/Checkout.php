@@ -36,12 +36,13 @@ class Checkout extends AbstractController
     }
 
     /**
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    #[Route("/cart/count", name: "cart_count", methods: ['GET'], condition: "request.isXmlHttpRequest()")]
-    public function cartCountAction()
+    #[Route("/cart/quantity", name: "cart_quantity", methods: ['GET'], condition: "request.isXmlHttpRequest()")]
+    public function cartQuantityAction()
     {
-        return $this->json($this->checkoutService->getCartCount());
+        return $this->json($this->checkoutService->getCartQuantity());
     }
 
     /**

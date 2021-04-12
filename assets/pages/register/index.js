@@ -5,20 +5,20 @@ export default {
         }
     },
     created () {
-        this.asyncData();
+        this.loadForm();
     },
     methods: {
-        async asyncData () {
+        async loadForm () {
             let loader = this.$loading.show();
 
             return await this.$axios.get(this.$appConfig.routes.register_form)
                 .then(({ data }) => {
                     this.form = data;
-                    this.$nextTick(loader.hide());
+                    this.$nextTick(loader.hide);
                 })
                 .catch(error => {
                     this.$toast.error('An error has occurred.');
-                    this.$nextTick(loader.hide());
+                    this.$nextTick(loader.hide);
                 });
         },
         async register () {
@@ -31,7 +31,7 @@ export default {
                 .catch(({ response }) => {
                     this.$toast.error('An error has occurred.');
                     this.form = response.data;
-                    this.$nextTick(loader.hide());
+                    this.$nextTick(loader.hide);
                 });
         },
         getFormData () {

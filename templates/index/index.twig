@@ -55,7 +55,7 @@
                     'cart': '{{ path("checkout_cart") }}',
                     'cart_content': '{{ path("checkout_cart_content") }}',
                     'add_to_cart': '{{ path("checkout_add_to_cart") }}',
-                    'cart_count': '{{ path("checkout_cart_count") }}',
+                    'cart_quantity': '{{ path("checkout_cart_quantity") }}',
                     'product_list': '{{ path("product_list") }}',
                 },
                 flashes: json_decode(`{{ app.flashes|json_encode }}`, []),

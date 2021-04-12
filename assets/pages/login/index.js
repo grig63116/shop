@@ -19,7 +19,7 @@ export default {
                     this.error = response.data.error;
                     this.validation = false;
                     this.$toast.error('An error has occurred.');
-                    this.$nextTick(loader.hide());
+                    this.$nextTick(loader.hide);
                 });
         },
         getFormData () {

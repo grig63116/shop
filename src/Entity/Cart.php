@@ -29,6 +29,11 @@ class Cart
     private $userId;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $productId;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $productNumber;
@@ -96,6 +101,25 @@ class Cart
     public function setUserId(?int $userId): self
     {
         $this->userId = $userId;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getProductId(): ?int
+    {
+        return $this->productId;
+    }
+
+    /**
+     * @param int|null $productId
+     * @return $this
+     */
+    public function setProductId(?int $productId): self
+    {
+        $this->productId = $productId;
 
         return $this;
     }

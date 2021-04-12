@@ -5,10 +5,10 @@ export default {
         }
     },
     created () {
-        this.asyncData();
+        this.loadUser();
     },
     methods: {
-        async asyncData () {
+        async loadUser () {
             let loader = this.$loading.show();
 
             return await this.$axios.get(this.$appConfig.routes.account_user)

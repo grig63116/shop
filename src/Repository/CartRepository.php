@@ -6,8 +6,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 use App\Entity\Cart;
-use App\Entity\Product;
-use  Doctrine\ORM\Query\Expr\Join;
 
 /**
  * @method Cart|null find($id, $lockMode = null, $lockVersion = null)
@@ -33,17 +31,16 @@ class CartRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $sessionId
-     * @param $userId
+     * @param string $sessionId
+     * @param int $userId
      * @return QueryBuilder
      */
-    public function getCartQueryBuilder($sessionId, $userId): QueryBuilder
+    public function getCartQueryBuilder(string $sessionId, int $userId): QueryBuilder
     {
         $builder = $this->createQueryBuilder('c');
         $expr = $builder->expr();
         return $builder
-            ->select('c, p')
-            ->leftJoin(Product::class, 'p', Join::WITH, 'c.productNumber=p.number')
+            ->select('c')
             ->where($expr->eq('c.sessionId', ':sessionId'))
             ->andWhere($expr->eq('c.userId', ':userId'))
             ->setParameters([
@@ -53,15 +50,30 @@ class CartRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param string $productNumber
+     * @param string $sessionId
+     * @param int $userId
+     * @return Cart
+     */
+    public function getCartItem(string $productNumber, string $sessionId, int $userId): ?Cart
+    {
+        return $this->findOneBy([
+            'sessionId' => $sessionId,
+            'userId' => $userId,
+            'productNumber' => $productNumber
+        ]);
+    }
+
+    /**
      * @param string $sessionId
      * @param int $userId
      * @return int
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getCartCount(string $sessionId, int $userId): int
+    public function getCartQuantity(string $sessionId, int $userId): int
     {
         try {
-            return (int)$this->getCartCountQueryBuilder($sessionId, $userId)->getQuery()->getSingleScalarResult();
+            return (int)$this->getCartQuantityQueryBuilder($sessionId, $userId)->getQuery()->getSingleScalarResult();
         } catch (\Doctrine\ORM\NoResultException $exception) {
             return 0;
         }
@@ -72,12 +84,12 @@ class CartRepository extends ServiceEntityRepository
      * @param $userId
      * @return QueryBuilder
      */
-    public function getCartCountQueryBuilder($sessionId, $userId): QueryBuilder
+    public function getCartQuantityQueryBuilder($sessionId, $userId): QueryBuilder
     {
         $builder = $this->createQueryBuilder('c');
         $expr = $builder->expr();
         return $builder
-            ->select('sum(c.quantity)')
+            ->select('count(c)')
             ->where($expr->eq('c.sessionId', ':sessionId'))
             ->andWhere($expr->eq('c.userId', ':userId'))
             ->setParameters([
