@@ -1,3 +1,4 @@
 export default {
-    getCurrentCart: state => state.cartItems
+    getTotalCount: state => state.totalCount,
+    isLoading: state => state.isLoading
 }

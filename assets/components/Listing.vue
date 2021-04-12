@@ -26,7 +26,10 @@
 </template>
 
 <script>
+import loaderMixin from '@/mixins/loader';
+
 export default {
+  mixins: [loaderMixin],
   data () {
     return {
       loader: null,
@@ -61,7 +64,7 @@ export default {
   },
   methods: {
     async asyncData () {
-      this.loader = this.$loading.show();
+      this.showLoader();
 
       return await this.$axios.get(this.$appConfig.routes.product_list, {
         params: {
@@ -79,7 +82,7 @@ export default {
           })
           .catch(error => {
             this.$toast.error('An error has occurred.');
-            this.$nextTick(loader.hide);
+            this.$nextTick(this.hideLoader);
           });
     },
     changePage (page) {
@@ -95,7 +98,7 @@ export default {
     },
     hideLoaderIfLoaded () {
       if (this.productsCount === this.readyProducts) {
-        this.loader.hide();
+        this.hideLoader();
       }
     }
   }

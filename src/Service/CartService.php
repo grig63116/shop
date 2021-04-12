@@ -5,16 +5,15 @@ namespace App\Service;
 use App\Entity\Cart;
 use App\Repository\CartRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping as ORM;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Class CheckoutService
+ * Class CartService
  * @package App\Service
  */
-class CheckoutService implements CheckoutServiceInterface
+class CartService implements CartServiceInterface
 {
     /**
      * @var ContainerInterface
@@ -42,7 +41,7 @@ class CheckoutService implements CheckoutServiceInterface
     private $productService;
 
     /**
-     * CheckoutService constructor.
+     * CartService constructor.
      * @param ContainerInterface $container
      * @param EntityManagerInterface $em
      * @param SessionInterface $session
@@ -65,7 +64,7 @@ class CheckoutService implements CheckoutServiceInterface
     /**
      * @return array
      */
-    public function getCart(): array
+    public function getContent(): array
     {
         $sessionId = $this->session->getId();
         $userId = $this->getUser() ? $this->getUser()->getId() : 0;
@@ -88,7 +87,7 @@ class CheckoutService implements CheckoutServiceInterface
      * @param string $number
      * @param int $quantity
      */
-    public function addToCart(string $number = '', int $quantity = 1): void
+    public function add(string $number = '', int $quantity = 1): void
     {
         if ($quantity < 1) {
             $quantity = 1;
@@ -99,7 +98,7 @@ class CheckoutService implements CheckoutServiceInterface
         }
         $sessionId = $this->session->getId();
         $userId = $this->getUser() ? $this->getUser()->getId() : 0;
-        $cart = $this->repository->getCartItem($number, $sessionId, $userId);
+        $cart = $this->repository->getItemByNumber(productNumber: $number, sessionId: $sessionId, userId: $userId);
         if (!($cart instanceof Cart)) {
             $cart = new Cart();
             $cart->setSessionId($sessionId);
@@ -115,15 +114,50 @@ class CheckoutService implements CheckoutServiceInterface
     }
 
     /**
-     * @return int
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @param int $id
      */
-    public function getCartQuantity(): int
+    public function remove(int $id)
     {
         $sessionId = $this->session->getId();
         $userId = $this->getUser() ? $this->getUser()->getId() : 0;
 
-        return $this->repository->getCartQuantity($sessionId, $userId);
+        $cartItem = $this->repository->getItemById(id: $id, sessionId: $sessionId, userId: $userId);
+        if ($cartItem instanceof Cart) {
+            $this->em->remove($cartItem);
+            $this->em->flush();
+        }
+    }
+
+    /**
+     * @return int
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getTotalCount(): int
+    {
+        $sessionId = $this->session->getId();
+        $userId = $this->getUser() ? $this->getUser()->getId() : 0;
+
+        return $this->repository->getTotalCount($sessionId, $userId);
+    }
+
+    /**
+     * @param int $id
+     * @param int $quantity
+     */
+    public function changeQuantity(int $id, int $quantity): void
+    {
+        if ($quantity < 1) {
+            return;
+        }
+        $sessionId = $this->session->getId();
+        $userId = $this->getUser() ? $this->getUser()->getId() : 0;
+
+        $cartItem = $this->repository->getItemById(id: $id, sessionId: $sessionId, userId: $userId);
+        if ($cartItem instanceof Cart && $cartItem->getQuantity() !== $quantity) {
+            $cartItem->setQuantity($quantity);
+            $this->em->persist($cartItem);
+            $this->em->flush();
+        }
     }
 
     /**

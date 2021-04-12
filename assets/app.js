@@ -1,7 +1,4 @@
-import Vue from 'vue';
-
-Vue.prototype.$appConfig = $appConfig;
-
+import '@/plugins/config';
 import '@/plugins/controllers';
 import '@/plugins/bootstrap';
 import '@/plugins/axios';

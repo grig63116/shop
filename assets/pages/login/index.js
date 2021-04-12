@@ -1,4 +1,7 @@
+import loaderMixin from '@/mixins/loader';
+
 export default {
+    mixins: [loaderMixin],
     data () {
         return {
             error: '',
@@ -7,9 +10,9 @@ export default {
     },
     methods: {
         async login () {
-            let loader = this.$loading.show();
+            this.showLoader();
 
-            await this.$axios.post(this.$refs.form.action, this.getFormData())
+            await this.$axios.post(this.$refs.form.action, Object.fromEntries(new FormData(this.$refs.form)))
                 .then(response => {
                     this.error = '';
                     this.validation = true;
@@ -19,11 +22,8 @@ export default {
                     this.error = response.data.error;
                     this.validation = false;
                     this.$toast.error('An error has occurred.');
-                    this.$nextTick(loader.hide);
+                    this.$nextTick(this.hideLoader);
                 });
-        },
-        getFormData () {
-            return Object.fromEntries(new FormData(this.$refs.form));
         }
     }
 }

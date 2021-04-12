@@ -1,4 +1,18 @@
-::v-deep .column-fit {
-  width: 1%;
-  white-space: nowrap;
+::v-deep {
+  caption{
+    @extend .border-top;
+  }
+
+  .column-fit {
+    width: 1%;
+    white-space: nowrap;
+  }
+
+  .product-image {
+    max-width: 5rem;
+
+    img {
+      object-fit: contain;
+    }
+  }
 }

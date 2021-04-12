@@ -1,3 +1,4 @@
 export default () => ({
-    cartItems: []
+    totalCount: 0,
+    isLoading: false
 })

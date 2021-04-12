@@ -50,17 +50,32 @@ class CartRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param int $id
+     * @param string $sessionId
+     * @param int $userId
+     * @return Cart|null
+     */
+    public function getItemById(int $id, string $sessionId, int $userId): ?Cart
+    {
+        return $this->findOneBy([
+            'id' => $id,
+            'sessionId' => $sessionId,
+            'userId' => $userId
+        ]);
+    }
+
+    /**
      * @param string $productNumber
      * @param string $sessionId
      * @param int $userId
-     * @return Cart
+     * @return Cart|null
      */
-    public function getCartItem(string $productNumber, string $sessionId, int $userId): ?Cart
+    public function getItemByNumber(string $productNumber, string $sessionId, int $userId): ?Cart
     {
         return $this->findOneBy([
+            'productNumber' => $productNumber,
             'sessionId' => $sessionId,
-            'userId' => $userId,
-            'productNumber' => $productNumber
+            'userId' => $userId
         ]);
     }
 
@@ -70,10 +85,10 @@ class CartRepository extends ServiceEntityRepository
      * @return int
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getCartQuantity(string $sessionId, int $userId): int
+    public function getTotalCount(string $sessionId, int $userId): int
     {
         try {
-            return (int)$this->getCartQuantityQueryBuilder($sessionId, $userId)->getQuery()->getSingleScalarResult();
+            return (int)$this->getTotalCountQueryBuilder($sessionId, $userId)->getQuery()->getSingleScalarResult();
         } catch (\Doctrine\ORM\NoResultException $exception) {
             return 0;
         }
@@ -84,7 +99,7 @@ class CartRepository extends ServiceEntityRepository
      * @param $userId
      * @return QueryBuilder
      */
-    public function getCartQuantityQueryBuilder($sessionId, $userId): QueryBuilder
+    public function getTotalCountQueryBuilder($sessionId, $userId): QueryBuilder
     {
         $builder = $this->createQueryBuilder('c');
         $expr = $builder->expr();

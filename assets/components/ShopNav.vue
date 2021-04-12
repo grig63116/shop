@@ -14,39 +14,28 @@
         title="Cart">
       <b-spinner v-if="cartLoading" class="cart-loader"></b-spinner>
       <b-icon-cart3 v-else font-scale="1.7"></b-icon-cart3>
-      <div class="cart-quantity bg-primary text-white text-center text-nowrap font-weight-bold rounded-circle">
-        {{ cartQuantity }}
+      <div class="cart-total-count bg-primary text-white text-center text-nowrap font-weight-bold rounded-circle">
+        {{ cartTotalCount }}
       </div>
     </b-nav-item>
   </b-nav>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
-  data () {
-    return {
-      cartLoading: false,
-      cartQuantity: 0,
-    }
+  computed: {
+    ...mapGetters({
+      cartTotalCount: 'cart/getTotalCount',
+      cartLoading: 'cart/isLoading'
+    })
   },
   methods: {
-    refreshCart () {
-      this.cartLoading = true;
-      return this.$axios.get(this.$appConfig.routes.cart_quantity)
-          .then(({ data }) => {
-            this.cartQuantity = data;
-            this.$nextTick(() => this.cartLoading = false);
-          })
-          .catch(error => {
-            this.$toast.error('An error has occurred.');
-            this.$nextTick(() => this.cartLoading = false);
-          });
-    }
+    ...mapActions({ refreshCart: 'cart/getTotalCount' })
   },
-  mounted: function () {
-    this.$root.$on('refresh-cart', this.refreshCart);
+  created: function () {
     this.refreshCart();
-    console.log('ShopNav', this);
   }
 }
 </script>
@@ -60,7 +49,7 @@ export default {
   }
 }
 
-.cart-quantity {
+.cart-total-count {
   position: absolute;
   top: 0;
   right: 0;
@@ -70,7 +59,7 @@ export default {
   font-size: 75%;
 }
 
-.cart-loader{
+.cart-loader {
   width: 1.7rem;
   height: 1.7rem;
 }

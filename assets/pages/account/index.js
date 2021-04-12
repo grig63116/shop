@@ -1,4 +1,7 @@
+import loaderMixin from '@/mixins/loader';
+
 export default {
+    mixins: [loaderMixin],
     data () {
         return {
             user: null
@@ -9,16 +12,16 @@ export default {
     },
     methods: {
         async loadUser () {
-            let loader = this.$loading.show();
+            this.showLoader();
 
             return await this.$axios.get(this.$appConfig.routes.account_user)
                 .then(({ data }) => {
                     this.user = data;
-                    this.$nextTick(loader.hide());
+                    this.$nextTick(this.hideLoader);
                 })
                 .catch(error => {
                     this.$toast.error('An error has occurred.');
-                    this.$nextTick(loader.hide());
+                    this.$nextTick(this.hideLoader);
                 });
         }
     }

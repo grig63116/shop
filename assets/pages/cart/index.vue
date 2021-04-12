@@ -16,7 +16,30 @@
           </div>
         </template>
         <template #cell(product)="data">
-          {{ data.item.productName }}
+          <b-card
+              class="border-0"
+              img-left
+              no-body
+              tag="article"
+          >
+            <div class="product-image">
+              <b-card-img-lazy
+                  class="w-100 h-100"
+                  :src="data.item.product.imageSrc"
+                  :alt="data.item.productName"></b-card-img-lazy>
+            </div>
+            <b-card-body>
+              <b-card-title
+                  class="mb-2"
+                  :title="data.item.productName"></b-card-title>
+              <b-card-sub-title class="mb-2">
+                <small>
+                  <strong>Number: </strong>
+                  <span>{{ data.item.productNumber }}</span>
+                </small>
+              </b-card-sub-title>
+            </b-card-body>
+          </b-card>
         </template>
         <template #cell(quantity)="data">
           <b-form-select
@@ -24,7 +47,7 @@
               :options="quantityOptions"
               v-model="data.item.quantity"
               size="sm"
-              @change="changeQuantity(data.item.id)"
+              @change="changeQuantity(data.item.id, data.item.quantity)"
           ></b-form-select>
         </template>
         <template #cell(price)="data">

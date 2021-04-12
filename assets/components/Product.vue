@@ -32,7 +32,11 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+import loaderMixin from '@/mixins/loader';
+
 export default {
+  mixins: [loaderMixin],
   props: {
     product: {
       type: Object,
@@ -48,21 +52,22 @@ export default {
     }
   },
   methods: {
+    ...mapActions({ refreshCart: 'cart/getTotalCount' }),
     async addToCart (number) {
-      let loader = this.$loading.show();
+      this.showLoader();
 
-      return await this.$axios.get(this.$appConfig.routes.add_to_cart, {
-        params: { number }
+      return await this.$axios.post(this.$appConfig.routes.cart_add, {
+        number
       })
           .then(() => {
-            this.$root.$emit('refresh-cart');
             this.$toast.success('Product was successfully added to cart.');
             this.$scrollTo(this.$root.$el);
-            this.$nextTick(loader.hide);
+            this.refreshCart();
+            this.$nextTick(this.hideLoader);
           })
           .catch(error => {
-            this.$toast.error('An error has occurred while adding product to cart.');
-            this.$nextTick(loader.hide);
+            this.$toast.error('An error has occurred.');
+            this.$nextTick(this.hideLoader);
           });
     }
   },

@@ -1,4 +1,7 @@
+import loaderMixin from '@/mixins/loader';
+
 export default {
+    mixins: [loaderMixin],
     data () {
         return {
             form: null,
@@ -9,33 +12,30 @@ export default {
     },
     methods: {
         async loadForm () {
-            let loader = this.$loading.show();
+            this.showLoader();
 
             return await this.$axios.get(this.$appConfig.routes.register_form)
                 .then(({ data }) => {
                     this.form = data;
-                    this.$nextTick(loader.hide);
+                    this.$nextTick(this.hideLoader);
                 })
                 .catch(error => {
                     this.$toast.error('An error has occurred.');
-                    this.$nextTick(loader.hide);
+                    this.$nextTick(this.hideLoader);
                 });
         },
         async register () {
-            let loader = this.$loading.show();
+            this.showLoader();
 
-            await this.$axios.post(this.$refs.form.action, this.getFormData())
+            await this.$axios.post(this.$refs.form.action, new URLSearchParams(new FormData(this.$refs.form)).toString())
                 .then(response => {
                     window.location.href = this.$appConfig.routes.account;
                 })
                 .catch(({ response }) => {
                     this.$toast.error('An error has occurred.');
                     this.form = response.data;
-                    this.$nextTick(loader.hide);
+                    this.$nextTick(this.hideLoader);
                 });
-        },
-        getFormData () {
-            return new URLSearchParams(new FormData(this.$refs.form)).toString();
         }
     }
 }
