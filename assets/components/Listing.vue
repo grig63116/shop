@@ -59,6 +59,9 @@ export default {
   methods: {
     ...mapActions({ getListing: 'listing/getListing' }),
     asyncData () {
+      if (this.isLoading) {
+        return;
+      }
       this.showLoader();
 
       return this.getListing({

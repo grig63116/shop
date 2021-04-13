@@ -1,11 +1,10 @@
 import loaderMixin from '@/mixins/loader';
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
     mixins: [loaderMixin],
     data () {
         return {
-            cart: null,
             fields: [
                 {
                     key: 'product',
@@ -42,12 +41,23 @@ export default {
             quantityOptions: Array.from(Array(100).keys(), i => ++i)
         }
     },
+    computed: {
+        ...mapGetters({
+            cart: 'cart/getCart'
+        })
+    },
     created () {
         this.asyncData();
     },
     methods: {
-        ...mapActions({ refreshCart: 'cart/getTotalCount' }),
+        ...mapActions({
+            refreshCart: 'cart/getTotalCount',
+            getCart: 'cart/getCart',
+        }),
         async asyncData () {
+            if (this.isLoading) {
+                return;
+            }
             this.showLoader();
 
             await this.getContent();
@@ -55,13 +65,9 @@ export default {
             this.$nextTick(this.hideLoader);
         },
         getContent () {
-            return this.$axios.get(this.$appConfig.routes.cart_content)
-                .then(({ data }) => {
-                    this.cart = data;
-                })
-                .catch(error => {
-                    this.$toast.error('An error has occurred.');
-                });
+            return this.getCart().catch(error => {
+                this.$toast.error('An error has occurred.');
+            });
         },
         async changeQuantity (id, quantity) {
             this.showLoader();

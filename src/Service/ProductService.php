@@ -73,6 +73,14 @@ class ProductService implements ProductServiceInterface
             $perPage,
             $options
         );
+        if ($pagination->getTotalItemCount() > 0 && empty($pagination->getItems())) {
+            $pagination = $this->paginator->paginate(
+                $queryBuilder,
+                1,
+                $perPage,
+                $options
+            );
+        }
         return [
             'page' => $pagination->getCurrentPageNumber(),
             'perPage' => $pagination->getItemNumberPerPage(),
