@@ -15,6 +15,10 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * Class AbstractController
+ * @package App\Component\Controller
+ */
 abstract class AbstractController extends SymfonyAbstractController implements ControllerInterface
 {
     /**
@@ -32,6 +36,9 @@ abstract class AbstractController extends SymfonyAbstractController implements C
      */
     protected $variables = [];
 
+    /**
+     * @return []|string[]
+     */
     public static function getSubscribedServices()
     {
         return array_merge(parent::getSubscribedServices(), [
@@ -45,6 +52,9 @@ abstract class AbstractController extends SymfonyAbstractController implements C
     /*
      * Inits the controller.
      * Called before evey action of the controller.
+     */
+    /**
+     *
      */
     public function preDispatch()
     {

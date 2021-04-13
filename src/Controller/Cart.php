@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
-use App\Component\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use App\Component\Controller\AbstractController;
 use App\Service\CartServiceInterface;
 
 /**
@@ -15,15 +15,13 @@ use App\Service\CartServiceInterface;
 class Cart extends AbstractController
 {
     /**
-     * @var CartServiceInterface
+     * Cart constructor.
+     * @param CartServiceInterface $cartService
      */
-    protected $cartService;
-
     public function __construct(
-        CartServiceInterface $cartService
+        private CartServiceInterface $cartService
     )
     {
-        $this->cartService = $cartService;
     }
 
     /**

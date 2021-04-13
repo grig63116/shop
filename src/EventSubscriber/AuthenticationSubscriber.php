@@ -2,10 +2,10 @@
 
 namespace App\EventSubscriber;
 
-use App\Service\CartServiceInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
+use App\Service\CartServiceInterface;
 use App\Entity\User;
 
 /**
@@ -14,16 +14,15 @@ use App\Entity\User;
  */
 class AuthenticationSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var CartServiceInterface
-     */
-    protected $cartService;
 
+    /**
+     * AuthenticationSubscriber constructor.
+     * @param CartServiceInterface $cartService
+     */
     public function __construct(
-        CartServiceInterface $cartService
+        private CartServiceInterface $cartService
     )
     {
-        $this->cartService = $cartService;
     }
 
     /**

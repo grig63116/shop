@@ -15,6 +15,10 @@ use App\Entity\Cart;
  */
 class CartRepository extends ServiceEntityRepository
 {
+    /**
+     * CartRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Cart::class);

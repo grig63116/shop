@@ -2,12 +2,12 @@
 
 namespace App\Service;
 
-use App\Entity\Cart;
-use App\Repository\CartRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Psr\Container\ContainerInterface;
+use App\Repository\CartRepository;
+use App\Entity\Cart;
 
 /**
  * Class CartService
@@ -16,29 +16,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class CartService implements CartServiceInterface
 {
     /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
-
-    /**
      * @var CartRepository
      */
     private $repository;
-
-    /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
-     * @var ProductServiceInterface
-     */
-    private $productService;
 
     /**
      * CartService constructor.
@@ -48,17 +28,13 @@ class CartService implements CartServiceInterface
      * @param ProductServiceInterface $productService
      */
     public function __construct(
-        ContainerInterface $container,
-        EntityManagerInterface $em,
-        SessionInterface $session,
-        ProductServiceInterface $productService
+        private ContainerInterface $container,
+        private EntityManagerInterface $em,
+        private SessionInterface $session,
+        private ProductServiceInterface $productService
     )
     {
-        $this->container = $container;
-        $this->em = $em;
         $this->repository = $this->em->getRepository(Cart::class);
-        $this->session = $session;
-        $this->productService = $productService;
     }
 
     /**
@@ -126,7 +102,7 @@ class CartService implements CartServiceInterface
     /**
      * @param int $id
      */
-    public function remove(int $id)
+    public function remove(int $id): void
     {
         $sessionId = $this->session->getId();
         $userId = $this->getUser() ? $this->getUser()->getId() : 0;

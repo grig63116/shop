@@ -2,34 +2,33 @@
 
 namespace App\Form;
 
-use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Validator\Constraints\IsTrue;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Regex;
-use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Validator\Constraints;
+use App\Entity\User;
 
+/**
+ * Class RegistrationFormType
+ * @package App\Form
+ */
 class RegistrationFormType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class, [
+            ->add('email', Type\EmailType::class, [
                 'constraints' => [
-                    new Email()
+                    new Constraints\Email()
                 ]
             ])
-            ->add('plainPassword', RepeatedType::class, [
-                'type' => PasswordType::class,
+            ->add('plainPassword', Type\RepeatedType::class, [
+                'type' => Type\PasswordType::class,
                 'options' => ['trim' => true],
                 'invalid_message' => 'The password fields must match.',
                 'first_options' => [
@@ -41,65 +40,68 @@ class RegistrationFormType extends AbstractType
                     'help' => 'Your password should match.'
                 ],
                 'constraints' => [
-                    new NotBlank([
+                    new Constraints\NotBlank([
                         'message' => 'Please enter a password',
                     ]),
-                    new Regex([
+                    new Constraints\Regex([
                         'pattern' => '/^(?=.*[A-Z]).*$/',
                         'message' => 'Password should contain at least one capital letter.',
                     ]),
-                    new Regex([
+                    new Constraints\Regex([
                         'pattern' => '/^(?=.*\W).*$/',
                         'message' => 'Password should contain at least one symbol.',
                     ]),
-                    new Regex([
+                    new Constraints\Regex([
                         'pattern' => '/^((?!\s).)*$/',
                         'message' => 'Password should not contain any whitespace characters.',
                     ]),
-                    new Length([
+                    new Constraints\Length([
                         'min' => 8,
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
                         'max' => 4096,
                     ])
                 ]
             ])
-            ->add('firstName', TextType::class, [
+            ->add('firstName', Type\TextType::class, [
                 'constraints' => [
-                    new NotBlank()
+                    new Constraints\NotBlank()
                 ]
             ])
-            ->add('lastName', TextType::class, [
+            ->add('lastName', Type\TextType::class, [
                 'constraints' => [
-                    new NotBlank()
+                    new Constraints\NotBlank()
                 ]
             ])
-            ->add('street', TextType::class, [
+            ->add('street', Type\TextType::class, [
                 'constraints' => [
-                    new NotBlank()
+                    new Constraints\NotBlank()
                 ]
             ])
-            ->add('zip', TextType::class, [
+            ->add('zip', Type\TextType::class, [
                 'constraints' => [
-                    new NotBlank()
+                    new Constraints\NotBlank()
                 ]
             ])
-            ->add('city', TextType::class, [
+            ->add('city', Type\TextType::class, [
                 'constraints' => [
-                    new NotBlank()
+                    new Constraints\NotBlank()
                 ]
             ])
-            ->add('phone', TextType::class, [
+            ->add('phone', Type\TextType::class, [
                 'required' => false,
             ])
-            ->add('termsAccepted', CheckboxType::class, [
+            ->add('termsAccepted', Type\CheckboxType::class, [
                 'mapped' => false,
-                'constraints' => new IsTrue([
+                'constraints' => new Constraints\IsTrue([
                     'message' => 'You should agree to our terms.'
                 ])
             ])
-            ->add('submit', SubmitType::class);
+            ->add('submit', Type\SubmitType::class);
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

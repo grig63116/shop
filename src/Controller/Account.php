@@ -3,9 +3,9 @@
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
-use App\Component\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
+use App\Component\Controller\AbstractController;
 
 /**
  * Class Account

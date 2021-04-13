@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\CartRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use App\Repository\CartRepository;
 
 /**
  * @ORM\Entity(repositoryClass=CartRepository::class)

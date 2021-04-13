@@ -2,14 +2,12 @@
 
 namespace App\Service;
 
-use App\Entity\Product;
-use App\Repository\ProductRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\Pagination\PaginationInterface;
-use Knp\Component\Pager\PaginatorInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Knp\Component\Pager\PaginatorInterface;
+use App\Repository\ProductRepository;
+use App\Entity\Product;
 
 /**
  * Class ProductService
@@ -17,25 +15,11 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ProductService implements ProductServiceInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
 
     /**
      * @var ProductRepository
      */
     private $repository;
-
-    /**
-     * @var PaginatorInterface
-     */
-    private $paginator;
-
-    /**
-     * @var SerializerInterface
-     */
-    private $serializer;
 
     /**
      * ProductService constructor.
@@ -44,19 +28,18 @@ class ProductService implements ProductServiceInterface
      * @param SerializerInterface $serializer
      */
     public function __construct(
-        EntityManagerInterface $em,
-        PaginatorInterface $paginator,
-        SerializerInterface $serializer
+        private EntityManagerInterface $em,
+        private PaginatorInterface $paginator,
+        private SerializerInterface $serializer
     )
     {
-        $this->em = $em;
         $this->repository = $this->em->getRepository(Product::class);
-        $this->paginator = $paginator;
-        $this->serializer = $serializer;
     }
+
 
     /**
      * @param string $number
+     * @param int|null $id
      * @return array
      */
     public function get(string $number, int $id = null): array
@@ -79,7 +62,7 @@ class ProductService implements ProductServiceInterface
      * @param int $page
      * @param int $perPage
      * @param array $options
-     * @return PaginationInterface
+     * @return array
      */
     public function getList(int $page = 1, int $perPage = 9, array $options = []): array
     {

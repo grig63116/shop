@@ -2,9 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\Product;
 use Doctrine\Common\Collections\ArrayCollection;
-use Knp\Component\Pager\Pagination\PaginationInterface;
 
 /**
  * Interface ProductServiceInterface
@@ -23,7 +21,7 @@ interface ProductServiceInterface
      * @param int $page
      * @param int $perPage
      * @param array $options
-     * @return PaginationInterface
+     * @return array
      */
     public function getList(int $page = 1, int $perPage = 9, array $options = []): array;
 

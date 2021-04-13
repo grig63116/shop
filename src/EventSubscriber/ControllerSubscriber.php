@@ -2,11 +2,11 @@
 
 namespace App\EventSubscriber;
 
-use App\Component\Controller\ControllerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
+use App\Component\Controller\ControllerInterface;
 
 /**
  * Class ControllerSubscriber

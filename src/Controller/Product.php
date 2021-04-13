@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
-use App\Component\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use App\Component\Controller\AbstractController;
 use App\Service\ProductServiceInterface;
 
 /**
@@ -14,16 +14,15 @@ use App\Service\ProductServiceInterface;
 #[Route("/product", name: "product_")]
 class Product extends AbstractController
 {
-    /**
-     * @var ProductServiceInterface
-     */
-    protected $productService;
 
+    /**
+     * Product constructor.
+     * @param ProductServiceInterface $productService
+     */
     public function __construct(
-        ProductServiceInterface $productService
+        private ProductServiceInterface $productService
     )
     {
-        $this->productService = $productService;
     }
 
     /**
