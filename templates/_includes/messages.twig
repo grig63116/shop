@@ -1,0 +1,49 @@
+{# Type #}
+{% if not type %}
+    {% set type = 'info' %}
+{% endif %}
+
+{# Icon classes #}
+{% if type == 'error' %}
+    {% set iconCls = 'dripicons-wrong' %}
+{% elseif type == 'success' %}
+    {% set iconCls= 'dripicons-checkmark' %}
+{% elseif type == 'warning' %}
+    {% set iconCls = 'dripicons-warning' %}
+{% else %}
+    {% set iconCls = 'dripicons-information' %}
+{% endif %}
+
+{# Support for customized icons #}
+{% if icon is defined and icon|length %}
+    {% set iconCls=icon %}
+{% endif %}
+
+{# Support for bold text #}
+{% set isBold=false %}
+{% if bold is defined %}
+    {% set isBold=bold %}
+{% endif %}
+
+{# Support for hiding the message on startup #}
+{% set isVisible=true %}
+{% if visible is defined %}
+    {% set isVisible=visible %}
+{% endif %}
+
+{# Messages container #}
+{% block global_messages_container %}
+    {% if content %}
+        <div class="alert alert-{{ type }}{% if not isVisible %} d-none{% endif %}">
+            {# Icon column #}
+            {% block global_messages_icon %}
+                <i class="{{ iconCls }} mr-2"></i>
+            {% endblock %}
+
+            {# Content column #}
+            {% block global_messages_content %}
+                <span class="{% if isBold %} font-weight-bold{% endif %}">{{ content }}</span>
+            {% endblock %}
+        </div>
+    {% endif %}
+{% endblock %}
