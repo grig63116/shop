@@ -62,6 +62,16 @@ class CartService implements CartServiceInterface
     }
 
     /**
+     * @param string $oldSessionId
+     * @param string $newSessionId
+     * @param int $userId
+     */
+    public function migrate(string $oldSessionId, string $newSessionId, int $userId): void
+    {
+        $this->repository->migrateUserCart(oldSessionId: $oldSessionId, newSessionId: $newSessionId, userId: $userId);
+    }
+
+    /**
      * @return array
      */
     public function getContent(): array

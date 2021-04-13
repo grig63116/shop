@@ -1,6 +1,6 @@
 <template>
   <Page>
-    <b-alert variant="warning" :show="!loader || (!loader.isActive && !cart)">
+    <b-alert variant="warning" :show="!isLoading && !cart">
       You have no items in your shopping cart!
     </b-alert>
     <div v-if="cart"

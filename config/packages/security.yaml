@@ -19,6 +19,7 @@ security:
         check_path: authentication_login_handler
         username_path: email
         password_path: password
+        provider: user_provider
       logout:
         path: authentication_logout
         target: account_index

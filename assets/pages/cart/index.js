@@ -43,7 +43,6 @@ export default {
         }
     },
     created () {
-        console.log('Cart', this);
         this.asyncData();
     },
     methods: {

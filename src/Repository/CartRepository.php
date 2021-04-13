@@ -21,6 +21,27 @@ class CartRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param string $oldSessionId
+     * @param string $newSessionId
+     * @param int $userId
+     */
+    public function migrateUserCart(string $oldSessionId, string $newSessionId, int $userId): void
+    {
+        $this->createQueryBuilder('c')
+            ->update()
+            ->set('c.sessionId', ':newSessionId')
+            ->set('c.userId', ':userId')
+            ->where('c.sessionId = :oldSessionId')
+            ->setParameters([
+                'oldSessionId' => $oldSessionId,
+                'newSessionId' => $newSessionId,
+                'userId' => $userId
+            ])
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
      * @param string $sessionId
      * @param int $userId
      * @return array

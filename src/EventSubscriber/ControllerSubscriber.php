@@ -3,13 +3,10 @@
 namespace App\EventSubscriber;
 
 use App\Component\Controller\ControllerInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Class ControllerSubscriber
@@ -17,33 +14,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ControllerSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $params;
-
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $router;
-
-    /**
-     * ControllerSubscriber constructor.
-     * @param TokenStorageInterface $tokenStorage
-     * @param ParameterBagInterface $params
-     * @param UrlGeneratorInterface $router
-     */
-    public function __construct(TokenStorageInterface $tokenStorage, ParameterBagInterface $params, UrlGeneratorInterface $router)
-    {
-        $this->tokenStorage = $tokenStorage;
-        $this->params = $params;
-        $this->router = $router;
-    }
-
     /**
      * @return array
      */
@@ -123,28 +93,5 @@ class ControllerSubscriber implements EventSubscriberInterface
     private function formatName($name)
     {
         return trim(strtolower(preg_replace('#[A-Z]#', '_$0', $name)), '_');
-    }
-
-    /**
-     * @param $controller
-     * @param $action
-     * @return bool
-     */
-    private function checkFrozenAccess($controller, $action)
-    {
-        $frozen_allowed_actions = $this->params->get('allowed_actions');
-
-        if (!isset($frozen_allowed_actions[$controller])) {
-            return false;
-        }
-        if (is_array($frozen_allowed_actions[$controller]) && in_array($action, $frozen_allowed_actions[$controller])) {
-            return true;
-        }
-
-        if (!is_array($frozen_allowed_actions[$controller]) && $frozen_allowed_actions[$controller] === '*') {
-            return true;
-        }
-
-        return false;
     }
 }

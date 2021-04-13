@@ -3,10 +3,9 @@
     <b-col>
       <paginate
           v-model="page"
-          :page-count="pagesCount"
+          :page-count="pages"
           :page-range="pageRange"
           :margin-pages="marginPages"
-          :click-handler="clickCallback"
           :no-li-surround="true"
           :first-last-button="true"
           page-link-class="btn btn-outline-secondary btn-sm mx-1"
@@ -38,38 +37,13 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
-  props: {
-    currentPage: {
-      type: Number,
-      default: 1
-    },
-    pagesCount: {
-      type: Number,
-      default: 1
-    },
-    perPageCount: {
-      type: Number,
-      default: 9
-    }
-  },
-  watch: {
-    currentPage (page) {
-      this.page = page;
-    },
-    perPageCount (perPage) {
-      this.perPage = perPage;
-    },
-    perPage (perPage) {
-      this.$emit('changePerPage', perPage);
-    }
-  },
   data () {
     return {
-      pageRange: 5,
       marginPages: 1,
-      page: 1,
-      perPage: 9,
+      pageRange: 5,
       perPageOptions: [
         { value: 3, text: '3' },
         { value: 6, text: '6' },
@@ -83,9 +57,28 @@ export default {
       ]
     }
   },
-  methods: {
-    clickCallback (page) {
-      this.$emit('changePage', page);
+  computed: {
+    page: {
+      get () {
+        return this.$store.getters['listing/getPage'];
+      },
+      set (page) {
+        this.$store.commit('listing/SET_PAGE', page);
+      }
+    },
+    perPage: {
+      get () {
+        return this.$store.getters['listing/getPerPage'];
+      },
+      set (perPage) {
+        this.$store.commit('listing/SET_PER_PAGE', perPage);
+      }
+    },
+    ...mapGetters({
+      total: 'listing/getTotal'
+    }),
+    pages () {
+      return Math.ceil(this.total / this.perPage);
     }
   }
 }

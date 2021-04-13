@@ -5,8 +5,6 @@ export default {
             .then(({ data }) => {
                 commit('SET_TOTAL_COUNT', data);
                 commit('SET_IS_LOADING', false);
-            })
-            .catch(error => {
             });
     }
 }

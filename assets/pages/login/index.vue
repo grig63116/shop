@@ -16,6 +16,7 @@
           </b-input-group-prepend>
           <b-form-input type="email"
                         name="email"
+                        autocomplete="email"
                         placeholder="Enter your email"
                         required
                         :state="validation"
@@ -28,6 +29,7 @@
           </b-input-group-prepend>
           <b-form-input type="password"
                         name="password"
+                        autocomplete="password"
                         placeholder="Enter your password"
                         required
                         :state="validation"
