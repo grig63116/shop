@@ -8,7 +8,8 @@
 
 > Shop is a simple ecommerce application example with authentication, listing and cart pages.
 
-### Tech
+
+### <div id="/tech"><a id="tech"></a>Tech</div>
 
 Uses a number of open source projects to work properly:
 
@@ -28,6 +29,8 @@ $ npm install
 ```
 
 > Product images should be stored in <code>/public/media</code> directory with the corresponding name as in the database.
+
+> For more information please follow the corresponding documentations of the [mentioned](#tech) freamworks and libraries.
 
 ## Author
 
