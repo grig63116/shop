@@ -1,8 +1,8 @@
 <template>
   <div class="listing">
-    <template v-if="this.productsCount">
+    <template v-if="productsCount">
       <ListingActions></ListingActions>
-      <b-row class="my-3" alignh="between" align-v="stretch" cols="3">
+      <b-row class="my-3" align-content="between" align-v="stretch" cols="1" cols-md="2" cols-lg="3">
         <b-col class="my-3" v-for="(product,number) in products" :key="number">
           <Product class="h-100" :product="product" @ready="onProductReady"></Product>
         </b-col>

@@ -10,10 +10,3 @@
     <Footer class="mt-auto"></Footer>
   </div>
 </template>
-<script>
-export default {
-  mounted () {
-    console.log('Page', this);
-  }
-}
-</script>

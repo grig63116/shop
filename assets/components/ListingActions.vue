@@ -1,5 +1,5 @@
 <template>
-  <b-row align-content="between" align-v="center" :no-gutters="true">
+  <b-row align-content="between" align-v="center" :no-gutters="true" cols="1" cols-lg="2">
     <b-col>
       <paginate
           v-model="page"
@@ -8,16 +8,17 @@
           :margin-pages="marginPages"
           :no-li-surround="true"
           :first-last-button="true"
-          page-link-class="btn btn-outline-secondary btn-sm mx-1"
+          container-class="text-center text-lg-left"
+          page-link-class="btn btn-outline-secondary btn-sm mx-1 my-1 my-lg-auto"
           prev-link-class="btn btn-outline-secondary btn-sm mx-auto"
           next-link-class="btn btn-outline-secondary btn-sm mx-auto"
           break-view-link-class="border-0"
       >
       </paginate>
     </b-col>
-    <b-col>
+    <b-col class="mt-3 mt-lg-auto">
       <b-form-group
-          class="justify-content-end align-items-center mb-0"
+          class="justify-content-center justify-content-lg-end align-items-center mb-0"
           label="Products per page"
           content-cols="auto"
           label-cols="auto"

@@ -17,7 +17,7 @@
           :title="product.name"
           v-line-clamp="2"></b-card-title>
       <b-card-sub-title class="mb-2">
-        <small>
+        <small class="text-nowrap">
           <strong>Number: </strong>
           <span>{{ product.number }}</span>
         </small>

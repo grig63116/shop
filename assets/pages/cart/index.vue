@@ -1,9 +1,9 @@
 <template>
   <Page>
-    <b-alert variant="warning" :show="!isLoading && !cart">
+    <b-alert variant="warning" :show="!isLoading && cartIsEmpty">
       You have no items in your shopping cart!
     </b-alert>
-    <div v-if="cart"
+    <div v-if="!cartIsEmpty"
          class="p-3 border rounded">
       <b-table
           :items="cart.items"
@@ -33,7 +33,7 @@
                   class="mb-2"
                   :title="data.item.productName"></b-card-title>
               <b-card-sub-title class="mb-2">
-                <small>
+                <small class="text-nowrap">
                   <strong>Number: </strong>
                   <span>{{ data.item.productNumber }}</span>
                 </small>

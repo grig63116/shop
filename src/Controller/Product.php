@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -31,8 +31,8 @@ class Product extends AbstractController
     #[Route("/list", name: "list", methods: ['GET'], condition: "request.isXmlHttpRequest()")]
     public function listAction()
     {
-        $page = $this->request->get('page');
-        $perPage = $this->request->get('perPage');
+        $page = (int)$this->request->get('page');
+        $perPage = (int)$this->request->get('perPage');
         return $this->json($this->productService->getList(page: $page, perPage: $perPage));
     }
 }

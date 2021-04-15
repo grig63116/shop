@@ -44,7 +44,10 @@ export default {
     computed: {
         ...mapGetters({
             cart: 'cart/getCart'
-        })
+        }),
+        cartIsEmpty(){
+            return !this.cart || !this.cart.items.length;
+        }
     },
     created () {
         this.asyncData();
