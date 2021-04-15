@@ -70,11 +70,6 @@ export default {
             this.$nextTick(this.hideLoader);
           });
     }
-  },
-  mounted: function () {
-    this.$nextTick().then(() => {
-      this.$emit('ready');
-    });
   }
 }
 </script>

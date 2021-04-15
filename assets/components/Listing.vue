@@ -4,7 +4,7 @@
       <ListingActions></ListingActions>
       <b-row class="my-3" align-content="between" align-v="stretch" cols="1" cols-md="2" cols-lg="3">
         <b-col class="my-3" v-for="(product,number) in products" :key="number">
-          <Product class="h-100" :product="product" @ready="onProductReady"></Product>
+          <Product class="h-100" :product="product"></Product>
         </b-col>
       </b-row>
       <ListingActions></ListingActions>
@@ -21,18 +21,7 @@ import loaderMixin from '@/mixins/loader';
 
 export default {
   mixins: [loaderMixin],
-  data () {
-    return {
-      readyProducts: 0
-    };
-  },
   watch: {
-    products () {
-      this.readyProducts = 0;
-    },
-    readyProducts () {
-      this.hideLoaderIfLoaded();
-    },
     page () {
       this.asyncData();
     },
@@ -70,20 +59,12 @@ export default {
       })
           .then(() => {
             this.$scrollTo(this.$el);
-            this.$nextTick(this.hideLoaderIfLoaded);
+            this.$nextTick(this.hideLoader);
           })
           .catch(error => {
             this.$toast.error('An error has occurred.');
             this.$nextTick(this.hideLoader);
           });
-    },
-    onProductReady () {
-      this.readyProducts++;
-    },
-    hideLoaderIfLoaded () {
-      if (this.productsCount === this.readyProducts) {
-        this.hideLoader();
-      }
     }
   }
 }

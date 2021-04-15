@@ -34,7 +34,7 @@ export default {
   methods: {
     ...mapActions({ refreshCart: 'cart/getTotalCount' })
   },
-  created: function () {
+  created () {
     this.refreshCart();
   }
 }

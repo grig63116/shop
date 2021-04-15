@@ -15,7 +15,8 @@ Uses a number of open source projects to work properly:
 
 * [Symfony 5.2](https://symfony.com/releases/5.2) - Symfony is a set of PHP Components, a Web Application framework, a Philosophy, and a Community — all working together in harmony.
 * [Symfony Encore](https://symfony.com/doc/current/frontend.html) - A Simple & Powerful Webpack API.
-* [Vue.js](https://symfony.com/releases/5.2) - The Progressive JavaScript Framework.
+* [Vue.js](https://vuejs.org/) - The Progressive JavaScript Framework.
+* [Vuex](https://vuex.vuejs.org/) - State management pattern + library for Vue.js applications.
 * [Bootstrap Vue](https://bootstrap-vue.org/) - With BootstrapVue you can build responsive, mobile-first, and ARIA accessible projects on the web using Vue.js and the world's most popular front-end CSS library — Bootstrap v4.
 
 [Private repository](<https://github.com/grig63116/shop>) on GitHub.
