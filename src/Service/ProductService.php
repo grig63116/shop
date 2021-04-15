@@ -55,7 +55,7 @@ class ProductService implements ProductServiceInterface
             return [];
         }
 
-        return $this->convertList([$product])->get($product->getNumber());
+        return $this->convert($product);
     }
 
     /**
@@ -90,6 +90,15 @@ class ProductService implements ProductServiceInterface
     }
 
     /**
+     * @param Product $product
+     * @return array
+     */
+    public function convert(Product $product): array
+    {
+        return $this->convertList([$product])->get($product->getNumber());
+    }
+
+    /**
      * @param iterable|array $products
      * @return ArrayCollection
      */
@@ -97,8 +106,10 @@ class ProductService implements ProductServiceInterface
     {
         $data = [];
         foreach ($products as $product) {
-            $product = $this->serializer->normalize($product);
-            $data[$product['number']] = $product;
+            if ($product instanceof Product) {
+                $product = $this->serializer->normalize($product);
+                $data[$product['number']] = $product;
+            }
         }
         return new ArrayCollection($data);
     }

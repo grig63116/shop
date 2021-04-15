@@ -87,7 +87,7 @@ class Authentication extends AbstractController
      * @return RedirectResponse|Response
      */
     #[Route("/register", name: "register_handler", methods: ["POST"], condition: "request.isXmlHttpRequest()")]
-    public function registerHandlerAction(): Response
+    public function registerHandlerAction(): Response|RedirectResponse
     {
         $this->denyAccessUnlessGranted(AuthenticatedVoter::IS_ANONYMOUS);
         $user = new User();

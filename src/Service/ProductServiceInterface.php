@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Product;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -24,6 +25,12 @@ interface ProductServiceInterface
      * @return array
      */
     public function getList(int $page = 1, int $perPage = 9, array $options = []): array;
+
+    /**
+     * @param Product $product
+     * @return array
+     */
+    public function convert(Product $product): array;
 
     /**
      * @param iterable|array $products
